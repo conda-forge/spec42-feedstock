@@ -19,9 +19,9 @@ cargo-bundle-licenses \
     --format yaml \
     --output THIRDPARTY.yml
 
-# Two binaries from two workspace members: `spec42` from crates/server (the language
-# server and CLI, which is the only artifact upstream publishes) and `kpar-pack` from
-# crates/kpar. Both installs share the workspace target directory, so the second reuses
-# the first's dependency build.
+# One binary, `spec42` from crates/server: the language server and CLI, and the only
+# artifact upstream publishes. Up to 0.50.0 crates/kpar also built a `kpar-pack` binary,
+# installed here as well; 0.51.0 turned that crate into a library only, so installing it
+# now fails with "no packages found with binaries or examples". Its packing function is
+# reachable as `spec42 bundle`.
 cargo install --locked --no-track --root "${PREFIX}" --path crates/server
-cargo install --locked --no-track --root "${PREFIX}" --path crates/kpar
