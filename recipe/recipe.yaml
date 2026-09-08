@@ -1,7 +1,9 @@
 context:
-  version: "0.50.0"
+  version: "0.51.0"
   # The bundled library versions are pinned by the source tree, not chosen here:
-  #   stdlib_version -> config/standard-library.json  (version + repo + contentPath)
+  #   stdlib_version -> config/standard-library.json  (version + repo + contentPath, and
+  #                                                    since 0.51.0 a `projects` list that
+  #                                                    the ten stdlib sources below mirror)
   #   domain_version -> config/libraries/domain.json  (version + artifact)
   #   method_version -> config/libraries/method.json  (version + artifact)
   # crates/workspace/build.rs refuses to build with the default `embed-stdlib` /
@@ -25,7 +27,7 @@ package:
 
 source:
   - url: https://github.com/elan8/spec42/archive/refs/tags/v${{ version }}.tar.gz
-    sha256: eff3524569364c32e8778a185fe08e685e911ce7052271d6e78b612bba972558
+    sha256: b920918faa2317193f9bfc246e51acf273790564967d06c51863104adcb2d347
 
   # OMG SysML v2 / KerML standard library, embedded into the binary by the `embed-stdlib`
   # feature. The library versions below are those shipped in the ${{ stdlib_version }} release
@@ -99,14 +101,18 @@ tests:
   - package_contents:
       bin:
         - spec42
-        - kpar-pack
 
   - script:
       - spec42 --version
       - spec42 --help
       - spec42 lsp --help
       - spec42 check --help
-      - kpar-pack --help
+      # KPAR archives are created and unpacked through these subcommands. Up to 0.50.0
+      # the packing half was a second binary, `kpar-pack` from crates/kpar; 0.51.0 made
+      # that crate a library only (it no longer even depends on clap), so the archive
+      # commands exist solely as part of `spec42`.
+      - spec42 bundle --help
+      - spec42 unbundle --help
 
   # These resolve and materialise the libraries baked in at build time, so they fail if
   # the embedded stdlib or KPAR bundles did not make it into the binary.
@@ -137,8 +143,8 @@ about:
 
     This package provides the `spec42` executable — `spec42 lsp` for editor
     integration, `spec42 check` for validation with text, JSON, SARIF, or JUnit
-    output, plus model summary and diagram export subcommands — and `kpar-pack`
-    for building KerML Project Archive (KPAR) files.
+    output, `spec42 bundle` and `spec42 unbundle` for building and unpacking KerML
+    Project Archive (KPAR) files, plus model summary and diagram export subcommands.
 
     The OMG SysML v2 standard library and the Elan8 domain and method libraries are
     embedded in the binary, so no network access is required at run time. The VS Code
