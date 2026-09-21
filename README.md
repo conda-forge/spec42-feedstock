@@ -20,8 +20,8 @@ validation agree.
 
 This package provides the `spec42` executable — `spec42 lsp` for editor
 integration, `spec42 check` for validation with text, JSON, SARIF, or JUnit
-output, plus model summary and diagram export subcommands — and `kpar-pack`
-for building KerML Project Archive (KPAR) files.
+output, `spec42 bundle` and `spec42 unbundle` for building and unpacking KerML
+Project Archive (KPAR) files, plus model summary and diagram export subcommands.
 
 The OMG SysML v2 standard library and the Elan8 domain and method libraries are
 embedded in the binary, so no network access is required at run time. The VS Code
