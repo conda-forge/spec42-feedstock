@@ -1,5 +1,5 @@
 context:
-  version: "0.53.1"
+  version: "0.54.0"
   # The bundled library versions are pinned by the source tree, not chosen here:
   #   stdlib_version -> config/standard-library.json  (version + repo + contentPath, and
   #                                                    since 0.51.0 a `projects` list that
@@ -15,8 +15,10 @@ context:
   method_version: "0.2.0"
   # Upstream tags the OMG release rather than attaching archives to it, and the whole
   # repository tarball is ~96 MB for ~250 kB of KPAR archives, so the individual files
-  # are fetched from the tag instead.
+  # are fetched from the tag instead. Keep a second host because raw.githubusercontent.com
+  # occasionally exhausts rattler-build's retries while fetching these small files.
   stdlib_url: https://raw.githubusercontent.com/Systems-Modeling/SysML-v2-Release/${{ stdlib_version }}/sysml.library.kpar
+  stdlib_mirror_url: https://cdn.jsdelivr.net/gh/Systems-Modeling/SysML-v2-Release@${{ stdlib_version }}/sysml.library.kpar
   # Default cache layout that crates/workspace/build.rs probes, relative to the workspace
   # root: `.cache/sysml-stdlib-kpar-<version>/*.kpar` and `.cache/<artifact>.kpar`.
   stdlib_dir: .cache/sysml-stdlib-kpar-${{ stdlib_version }}
@@ -27,39 +29,59 @@ package:
 
 source:
   - url: https://github.com/elan8/spec42/archive/refs/tags/v${{ version }}.tar.gz
-    sha256: bc589a100ddf3a61048b98531f592553f9191e1ddcf09a05e4a14d59c1876282
+    sha256: dbefc3a057ce7e25b178d2e80bd08cd30669868db2e7a2b9ccfe7776d1f5d79c
 
   # OMG SysML v2 / KerML standard library, embedded into the binary by the `embed-stdlib`
   # feature. The library versions below are those shipped in the ${{ stdlib_version }} release
   # and are independent of the release date; they change when OMG revises a library.
-  - url: ${{ stdlib_url }}/Kernel_Data_Type_Library-1.0.0.kpar
+  - url:
+      - ${{ stdlib_url }}/Kernel_Data_Type_Library-1.0.0.kpar
+      - ${{ stdlib_mirror_url }}/Kernel_Data_Type_Library-1.0.0.kpar
     sha256: 9f2bf2ebf72c6cb9f4a53999afe5e382bf65acfbc0f455ce2ca5ffe1e621326d
     target_directory: ${{ stdlib_dir }}
-  - url: ${{ stdlib_url }}/Kernel_Function_Library-1.0.0.kpar
+  - url:
+      - ${{ stdlib_url }}/Kernel_Function_Library-1.0.0.kpar
+      - ${{ stdlib_mirror_url }}/Kernel_Function_Library-1.0.0.kpar
     sha256: 05c57ed433073fde16f2a52bdbbe6ac099ce52520bfdf41893f7b49866aa24f4
     target_directory: ${{ stdlib_dir }}
-  - url: ${{ stdlib_url }}/Kernel_Semantic_Library-1.0.0.kpar
+  - url:
+      - ${{ stdlib_url }}/Kernel_Semantic_Library-1.0.0.kpar
+      - ${{ stdlib_mirror_url }}/Kernel_Semantic_Library-1.0.0.kpar
     sha256: e741ff98b689b6596da5078ec1693928a94d2f8a090a476e1f3e7a7f5d0abb84
     target_directory: ${{ stdlib_dir }}
-  - url: ${{ stdlib_url }}/SysML_Analysis_Library-2.0.0.kpar
+  - url:
+      - ${{ stdlib_url }}/SysML_Analysis_Library-2.0.0.kpar
+      - ${{ stdlib_mirror_url }}/SysML_Analysis_Library-2.0.0.kpar
     sha256: aa9b52c8e5954fefd8957400aa5a8a748d13e0bc227f5c1f7c6c5cc852e086d9
     target_directory: ${{ stdlib_dir }}
-  - url: ${{ stdlib_url }}/SysML_Cause_and_Effect_Library-2.0.0.kpar
+  - url:
+      - ${{ stdlib_url }}/SysML_Cause_and_Effect_Library-2.0.0.kpar
+      - ${{ stdlib_mirror_url }}/SysML_Cause_and_Effect_Library-2.0.0.kpar
     sha256: 022c3cc4a99aad9ce0d98a7c7c6de7eb6c4f6a2020cf85cb21c250fb5c737b64
     target_directory: ${{ stdlib_dir }}
-  - url: ${{ stdlib_url }}/SysML_Geometry_Library-2.0.0.kpar
+  - url:
+      - ${{ stdlib_url }}/SysML_Geometry_Library-2.0.0.kpar
+      - ${{ stdlib_mirror_url }}/SysML_Geometry_Library-2.0.0.kpar
     sha256: 96b3f9de7d6e8be1638aa5e68386b389bf9f9030b57c8febcbfb253eb12dacac
     target_directory: ${{ stdlib_dir }}
-  - url: ${{ stdlib_url }}/SysML_Metadata_Library-2.0.0.kpar
+  - url:
+      - ${{ stdlib_url }}/SysML_Metadata_Library-2.0.0.kpar
+      - ${{ stdlib_mirror_url }}/SysML_Metadata_Library-2.0.0.kpar
     sha256: 428cebf6efb4ace8320a1bb660369988b4d8634997b054dd1ffca3da5568c4c5
     target_directory: ${{ stdlib_dir }}
-  - url: ${{ stdlib_url }}/SysML_Quantities_and_Units_Library-2.0.0.kpar
+  - url:
+      - ${{ stdlib_url }}/SysML_Quantities_and_Units_Library-2.0.0.kpar
+      - ${{ stdlib_mirror_url }}/SysML_Quantities_and_Units_Library-2.0.0.kpar
     sha256: 2da5cc70598fd6fcfe2e3e9503942a48da2120252fffa0b9ff012a601f9a3acb
     target_directory: ${{ stdlib_dir }}
-  - url: ${{ stdlib_url }}/SysML_Requirement_Derivation_Library-2.0.0.kpar
+  - url:
+      - ${{ stdlib_url }}/SysML_Requirement_Derivation_Library-2.0.0.kpar
+      - ${{ stdlib_mirror_url }}/SysML_Requirement_Derivation_Library-2.0.0.kpar
     sha256: ce0e0246d47b613e5a1a39ed253071f89d3c69035afc5282076b381f1a633238
     target_directory: ${{ stdlib_dir }}
-  - url: ${{ stdlib_url }}/SysML_Systems_Library-2.0.0.kpar
+  - url:
+      - ${{ stdlib_url }}/SysML_Systems_Library-2.0.0.kpar
+      - ${{ stdlib_mirror_url }}/SysML_Systems_Library-2.0.0.kpar
     sha256: 7a8ea690b110466f50c52b8c594b9815a331377baebc2794958203b264d01bac
     target_directory: ${{ stdlib_dir }}
 
@@ -71,7 +93,9 @@ source:
   # pinned release: the LICENSE fetched here is plain EPL-2.0 (its Exhibit A secondary
   # licence placeholder is left unfilled), and the upstream README states that all
   # included KerML and SysML v2 models are licensed under EPL v2.0.
-  - url: https://raw.githubusercontent.com/Systems-Modeling/SysML-v2-Release/${{ stdlib_version }}/LICENSE
+  - url:
+      - https://raw.githubusercontent.com/Systems-Modeling/SysML-v2-Release/${{ stdlib_version }}/LICENSE
+      - https://cdn.jsdelivr.net/gh/Systems-Modeling/SysML-v2-Release@${{ stdlib_version }}/LICENSE
     sha256: 0becf16567beb77fa252b7664631dd177c8f9a1889e48995b45379c7130e5303
     file_name: LICENSE.sysml-v2-release-EPL-2.0
 
