@@ -1,5 +1,5 @@
 context:
-  version: "0.54.0"
+  version: "0.54.1"
   # The bundled library versions are pinned by the source tree, not chosen here:
   #   stdlib_version -> config/standard-library.json  (version + repo + contentPath, and
   #                                                    since 0.51.0 a `projects` list that
@@ -29,7 +29,7 @@ package:
 
 source:
   - url: https://github.com/elan8/spec42/archive/refs/tags/v${{ version }}.tar.gz
-    sha256: dbefc3a057ce7e25b178d2e80bd08cd30669868db2e7a2b9ccfe7776d1f5d79c
+    sha256: f9f2874addeb180631b2fe02b77b7f32d3c8bd6eb261129ab10004b07f60315f
 
   # OMG SysML v2 / KerML standard library, embedded into the binary by the `embed-stdlib`
   # feature. The library versions below are those shipped in the ${{ stdlib_version }} release
