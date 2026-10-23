@@ -2,7 +2,7 @@
 
 set -o errexit -o nounset -o pipefail
 
-# crates/workspace/build.rs embeds these archives; it exits 1 with an explanatory
+# crates/library_catalog/build.rs embeds these archives; it exits 1 with an explanatory
 # message if they are missing, but check here so a source layout change reads as a
 # recipe problem rather than a compile failure.
 ls -1 "${SRC_DIR}"/.cache/sysml-stdlib-kpar-*/*.kpar > /dev/null

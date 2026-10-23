@@ -5,21 +5,20 @@ context:
   #                                                    since 0.51.0 a `projects` list that
   #                                                    the ten stdlib sources below mirror)
   #   domain_version -> config/libraries/domain.json  (version + artifact)
-  #   method_version -> config/libraries/method.json  (version + artifact)
-  # crates/workspace/build.rs refuses to build with the default `embed-stdlib` /
+  # crates/library_catalog/build.rs refuses to build with the default `embed-stdlib` /
   # `embed-kpar-libraries` features unless it finds these archives, so they have to be
   # fetched as recipe sources rather than by upstream's scripts/fetch-*.sh (which clone
-  # and curl at build time). Re-check the three config files on every version bump.
+  # and curl at build time). Re-check standard-library.json and every entry in
+  # config/libraries on every version bump; 0.57.0 no longer bundles method libraries.
   stdlib_version: "2026-04"
-  domain_version: "0.3.0"
-  method_version: "0.2.0"
+  domain_version: "0.5.0"
   # Upstream tags the OMG release rather than attaching archives to it, and the whole
   # repository tarball is ~96 MB for ~250 kB of KPAR archives, so the individual files
   # are fetched from the tag instead. Keep a second host because raw.githubusercontent.com
   # occasionally exhausts rattler-build's retries while fetching these small files.
   stdlib_url: https://raw.githubusercontent.com/Systems-Modeling/SysML-v2-Release/${{ stdlib_version }}/sysml.library.kpar
   stdlib_mirror_url: https://cdn.jsdelivr.net/gh/Systems-Modeling/SysML-v2-Release@${{ stdlib_version }}/sysml.library.kpar
-  # Default cache layout that crates/workspace/build.rs probes, relative to the workspace
+  # Default cache layout that crates/library_catalog/build.rs probes, relative to the workspace
   # root: `.cache/sysml-stdlib-kpar-<version>/*.kpar` and `.cache/<artifact>.kpar`.
   stdlib_dir: .cache/sysml-stdlib-kpar-${{ stdlib_version }}
 
@@ -99,13 +98,10 @@ source:
     sha256: 0becf16567beb77fa252b7664631dd177c8f9a1889e48995b45379c7130e5303
     file_name: LICENSE.sysml-v2-release-EPL-2.0
 
-  # Elan8 domain and method libraries, embedded by the `embed-kpar-libraries` feature.
-  # These are prebuilt release assets, so build.rs copies them instead of packing them.
+  # Elan8 domain libraries, embedded by the `embed-kpar-libraries` feature.
+  # This is a prebuilt release asset, so build.rs copies it instead of packing it.
   - url: https://github.com/elan8/sysml-domain-libraries/releases/download/v${{ domain_version }}/elan8-domain-libraries-${{ domain_version }}.kpar
-    sha256: af457fb32a158a38c0a7513a0bf2397b99659bafcb8e3e5d735f491e8de09735
-    target_directory: .cache
-  - url: https://github.com/elan8/mbse-methodology/releases/download/v${{ method_version }}/elan8-method-libraries-${{ method_version }}.kpar
-    sha256: 31b9a04d53f4ebd7e4a48f1ee1f45b25586d9bebb536cc807915b6e6442882c9
+    sha256: c1007a19b257049b02e7faddc4aef499d36104183f1e6ab771a52a597a6d8ba4
     target_directory: .cache
 
 build:
@@ -170,13 +166,13 @@ about:
     output, `spec42 bundle` and `spec42 unbundle` for building and unpacking KerML
     Project Archive (KPAR) files, plus model summary and diagram export subcommands.
 
-    The OMG SysML v2 standard library and the Elan8 domain and method libraries are
+    The OMG SysML v2 standard library and the Elan8 domain libraries are
     embedded in the binary, so no network access is required at run time. The VS Code
     and Zed extensions are not part of this package; install them from their
     respective marketplaces and point them at this `spec42` binary.
   # The binary is not just spec42's own MIT code: the build embeds the OMG SysML v2 /
   # KerML standard library and `include_str!`s the vendored ELK.js assets, both EPL-2.0.
-  # The Elan8 domain and method libraries are also embedded and are MIT, so they need no
+  # The Elan8 domain libraries are also embedded and are MIT, so they need no
   # separate term in the expression.
   license: MIT AND EPL-2.0
   license_file:
@@ -188,9 +184,7 @@ about:
     - THIRDPARTY.yml
     # EPL-2.0, covering the embedded standard library and the vendored ELK.js assets.
     - LICENSE.sysml-v2-release-EPL-2.0
-    # The Elan8 domain and method libraries are embedded from release archives whose
-    # source repositories carry no licence file; this records the MIT grant that the
-    # archives themselves declare.
+    # MIT licence and provenance of the embedded Elan8 domain library bundle.
     - LICENSE.elan8-libraries.md
   documentation: https://elan8.github.io/spec42/
   repository: https://github.com/elan8/spec42
