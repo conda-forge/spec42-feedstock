@@ -11,7 +11,7 @@ context:
   # and curl at build time). Re-check standard-library.json and every entry in
   # config/libraries on every version bump; 0.57.0 no longer bundles method libraries.
   stdlib_version: "2026-04"
-  domain_version: "0.5.0"
+  domain_version: "0.6.0"
   # Upstream tags the OMG release rather than attaching archives to it, and the whole
   # repository tarball is ~96 MB for ~250 kB of KPAR archives, so the individual files
   # are fetched from the tag instead. Keep a second host because raw.githubusercontent.com
@@ -101,7 +101,7 @@ source:
   # Elan8 domain libraries, embedded by the `embed-kpar-libraries` feature.
   # This is a prebuilt release asset, so build.rs copies it instead of packing it.
   - url: https://github.com/elan8/sysml-domain-libraries/releases/download/v${{ domain_version }}/elan8-domain-libraries-${{ domain_version }}.kpar
-    sha256: c1007a19b257049b02e7faddc4aef499d36104183f1e6ab771a52a597a6d8ba4
+    sha256: 90692a7a24cf2e39e2029ac67fdbb67c0a5db4fc0f2c41b2bd0e537de6dcc6ac
     target_directory: .cache
 
 build:
