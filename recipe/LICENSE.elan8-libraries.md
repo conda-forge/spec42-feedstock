@@ -1,12 +1,12 @@
 # Elan8 domain libraries — licence and provenance
 
 The `spec42` binary embeds the domain library bundle from
-<https://github.com/elan8/sysml-domain-libraries/releases/download/v0.5.0/elan8-domain-libraries-0.5.0.kpar>
-(sha256 `c1007a19b257049b02e7faddc4aef499d36104183f1e6ab771a52a597a6d8ba4`).
-Its `.project.json` declares version `0.5.0`, licence `MIT`, and publisher `elan8`.
+<https://github.com/elan8/sysml-domain-libraries/releases/download/v0.9.0/elan8-domain-libraries-0.9.0.kpar>
+(sha256 `ecdce3833855e3889959a627e459fd17d68dbead769b4500cbd0d68c5ee555e1`).
+Its `.project.json` declares version `0.9.0`, licence `MIT`, and publisher `elan8`.
 
 The licence below is copied verbatim from
-<https://github.com/elan8/sysml-domain-libraries/blob/v0.5.0/LICENSE>.
+<https://github.com/elan8/sysml-domain-libraries/blob/v0.9.0/LICENSE>.
 
 ```text
 MIT License
